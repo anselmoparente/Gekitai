@@ -14,6 +14,7 @@ def handle_receive(conn, addr, conn_dict):
             message = conn.recv(1024).decode("utf-8")
             for addr_conn in conn_dict.items():
                 if addr_conn[0] != addr:
+                    print("send")
                     addr_conn[1].send(message.encode('utf-8'))
             if message == "quit":
                 conn.close()
@@ -28,7 +29,7 @@ def handle_receive(conn, addr, conn_dict):
 def main():
     conn_dict = {}
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(('localhost', 8888))
+    sock.bind(('localhost', 9000))
     listen(sock)
     try:
         while True:

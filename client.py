@@ -1,31 +1,28 @@
 import socket
-import threading
+import asyncio
 
-def handle_server_messages(client):
-    while True:
-        try:
-            message = client.recv(1024).decode('utf-8')
-            print(message)
-            if message == 'quit':
-                client.close()
-                break
-        except:
-            break
+async def handle_server_messages(client):
+    try:
+        message = await client.recv(1024).decode('utf-8')
+        print(message)
+        if message == 'quit':
+            client.close()
+    except:
+        pass
 
-def main():
+async def main():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    client.connect(('localhost', 8888))
+    client.connect(('localhost', 9000))
 
     print('Digite "quit" para terminar o chat')
 
     while True:
         try:
-            handle_thread = threading.Thread(target=handle_server_messages, args=[client])
-            handle_thread.start()
             client.send(input('Mensagem: ').encode('utf-8'))
-
-        except:
+            asyncio.ensure_future(handle_server_messages(client))
+        except Exception as e:
+            print(e)
             break
     try:
         client.close()
@@ -33,4 +30,4 @@ def main():
         exit(0)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
