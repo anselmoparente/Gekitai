@@ -71,7 +71,7 @@ class Interface:
     def draw(self):
         self.__screen.fill((255, 255, 255))
 
-        cell_image = pg.image.load("assets/cell.png")
+        cell_image = pg.image.load("assets/cela.png")
         red_piece = pg.image.load("assets/vermelho.png")
         blue_piece = pg.image.load("assets/azul.png")
         logo = pg.image.load("assets/logo.png")
